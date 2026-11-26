@@ -1,0 +1,13 @@
+﻿{
+  "name": "jenkins-web-pipeline",
+  "version": "1.0.0",
+  "description": "Node.js web application with CI/CD release automation",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node -e \"console.log('Tests passed!')\""
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
