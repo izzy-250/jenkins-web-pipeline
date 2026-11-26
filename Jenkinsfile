@@ -1,29 +1,29 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'jenkins-web-app:latest'
+        CONTAINER_NAME = 'jenkins-web-app'
+    }
+
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                echo "Checking out source code from GitHub..."
-                bat "git status"
+                echo 'Checking out source code...'
+                bat 'git status'
             }
         }
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo "Building the web application..."
-                bat "dir"
+                echo 'Building local Docker image...'
+                bat "docker build -t %DOCKER_IMAGE% ."
             }
         }
-        stage('Test') {
+        stage('Deploy to Local Docker Host') {
             steps {
-                echo "Running tests..."
-                bat "echo Tests passed successfully"
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo "Deploying web application..."
-                bat "echo Deployment step completed"
+                echo 'Deploying container on local Docker host...'
+                bat "docker rm -f %CONTAINER_NAME% 2>nul || exit /b 0"
+                bat "docker run -d --name %CONTAINER_NAME% -p 8081:3000 %DOCKER_IMAGE%"
             }
         }
     }
